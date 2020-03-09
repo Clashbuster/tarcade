@@ -1,26 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import FirstScreen from './components/FirstScreen'
+import Browser from './components/Browser'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+
+class App extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      browser: false,
+    }
+  }
+
+enterBrowser = (e) => {
+  this.setState({
+    browser: true
+  })
+}
+
+componentDidUpdate(){
+  console.log(this.state)
+}
+
+
+
+
+  render(){
+    return (
+      <div className="App">
+        {this.state.browser? <Browser></Browser> : <FirstScreen enterBrowser={this.enterBrowser}></FirstScreen>}
+      </div>
+    );
+  }
 }
 
 export default App;
