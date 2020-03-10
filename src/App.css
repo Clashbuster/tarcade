@@ -45,21 +45,34 @@
 
 #game-list {
   padding: 20px;
-height: 80vh;
-order: 1;
-flex: 1 1 0px;
-align-self: center;
-display: flex;
-flex-direction: column;
-justify-content: flex-start;
+  height: 90vh;
+  order: 1;
+  flex: 1 1 0px;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 #game-window {
   padding: 8px;
-  height: 80vh;
+  height: 90vh;
   order: 2;
-  flex-grow: 4;
+  flex: 1 4 0px;
   align-self: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#game-window-fixed {
+  background-color: #1b262c;
+  width: 600px;
+  height: 550px;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 #ad-margin {
@@ -67,6 +80,17 @@ justify-content: flex-start;
   order: 3;
   flex: 1 1 0px;
   align-self: stretch;
+}
+
+#game-list-fixed {
+  width: 130px;
+  height: 400px;
+  padding: 5px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
 }
 
 .game-list-card{
