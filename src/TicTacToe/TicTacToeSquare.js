@@ -7,23 +7,36 @@ export default class TicTacToe extends React.Component {
     constructor(){
         super()
         this.state = {
-            clicked: false
+            clicked: false,
+            img: null
         }
     }
    
  handleClick(){
-    this.setState({
-        clicked: true
-    }, () => {
-        this.props.checkWin()
-    })
+     if(this.state.clicked === false){
+        if(this.props.turn === true){
+            this.setState({
+                img : <img alt="oopsie" src={require("../X.png")}></img>,
+                clicked : true
+            }, ()=> {
+                this.props.updateTurn()
+            })
+        } else {
+            this.setState({
+                img : <img alt="oopsie" src={require("../O.png")}></img>,
+                clicked : true
+            }, ()=> {
+                this.props.updateTurn()
+            })
+        }
+     }
  }
 
 
     render(){
         return(
             <div onClick={() => this.handleClick()} className="tictactoe-square">
-                {this.state.clicked? "I'm clicked": "I'm not clicked"}
+                {this.state.clicked? this.state.img : null}
             </div>
         )
     }

@@ -22,6 +22,18 @@ class Browser extends React.Component {
     })
   }
 
+  newGameClick(){
+      let holder = null
+      this.setState(prev => {
+        holder = prev.selection
+        return {selection: null}
+      }, () => {
+          this.setState({
+              selection: holder
+          })
+      })
+  }
+
 
 
   makeGameListCards(){
@@ -45,6 +57,9 @@ class Browser extends React.Component {
                 <div id="game-window">
                     <div id="game-window-fixed">
                         {this.state.selection}
+                    </div>
+                    <div onClick={() => this.newGameClick()} className="new-game">
+                        <div className="new-game-text">new</div>
                     </div>
                 </div>
 

@@ -62,7 +62,7 @@
   flex: 1 4 0px;
   align-self: center;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -73,6 +73,27 @@
   height: 550px;
   padding: 5px;
   border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-game {
+  height: 30px;
+  width: 80px;
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: #ed6663;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.new-game:hover{
+  background-color: #ffa372;
 }
 
 #ad-margin {
@@ -105,6 +126,7 @@
 .game-list-card:hover {
   background-color: #ffa372;
 }
+
 
 
 

@@ -8,23 +8,40 @@ export default class TicTacToe extends React.Component {
         super()
         this.state = {
             turn: true,
-            xs: [],
-            os: []
         }
     }
 
 
-    checkWin(){
-        console.log("hello")
+    updateTurn = () => {
+        this.setState(prev => {
+            let newTurn = !prev.turn
+            return {
+                turn: newTurn
+            }
+        })
     }
    
     generateSquares(){
-        let boxes = []
-        for(let i = 0; i < 9; i ++){
-            boxes.push(<TicTacToeSquare checkWin={this.checkWin} key={i}></TicTacToeSquare>)
-        }
 
-        return boxes
+        return ( 
+            <>
+                <div className="tictactoerow">
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={1}></TicTacToeSquare>
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={2}></TicTacToeSquare>
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={3}></TicTacToeSquare>
+                </div>
+                <div className="tictactoerow">
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={4}></TicTacToeSquare>
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={5}></TicTacToeSquare>
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={6}></TicTacToeSquare>
+                </div>
+                <div className="tictactoerow">
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={7}></TicTacToeSquare>
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={8}></TicTacToeSquare>
+                    <TicTacToeSquare className="tictactoesquare" turn={this.state.turn} updateTurn={this.updateTurn} key={9}></TicTacToeSquare>
+                </div>
+            </>
+        )
     }
 
 
