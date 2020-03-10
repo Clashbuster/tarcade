@@ -8,7 +8,7 @@ export default class SubmarineMen extends React.Component {
     render(){
         return(
             <div className="submarine-men">
-              Submarine Men
+             derp derp submarine men derpity derp
             </div>
         )
     }
