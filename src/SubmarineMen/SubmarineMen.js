@@ -9,51 +9,46 @@ import SBoat from  '../SubmarineMen/SBoat.js'
 
 export default class SubmarineMen extends React.Component {
 
-    componentDidUpdate(){
-        console.log(this.state)
-    }
-
 
 constructor(){
     super()
     this.playercycle = null
     this.gameBoard = null
     this.state = {
-        htmlplayers : [],
         positions: [
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
-            <SPosition player={null}></SPosition>,
+            <SPosition key={1} player={""} ></SPosition>,
+            <SPosition key={2} player={""} ></SPosition>,
+            <SPosition key={3} player={""} ></SPosition>,
+            <SPosition key={4} player={""} ></SPosition>,
+            <SPosition key={5} player={""} ></SPosition>,
+            <SPosition key={6} player={""} ></SPosition>,
+            <SPosition key={7} player={""} ></SPosition>,
+            <SPosition key={8} player={""} ></SPosition>,
+            <SPosition key={9} player={""} ></SPosition>,
+            <SPosition key={10} player={""} ></SPosition>,
+            <SPosition key={11} player={""} ></SPosition>,
+            <SPosition key={12} player={""} ></SPosition>,
+            <SPosition key={13} player={""} ></SPosition>,
+            <SPosition key={14} player={""} ></SPosition>,
+            <SPosition key={15} player={""} ></SPosition>,
+            <SPosition key={16} player={""} ></SPosition>,
+            <SPosition key={17} player={""} ></SPosition>,
+            <SPosition key={18} player={""} ></SPosition>,
+            <SPosition key={19} player={""} ></SPosition>,
+            <SPosition key={20} player={""} ></SPosition>,
+            <SPosition key={21} player={""} ></SPosition>,
+            <SPosition key={22} player={""} ></SPosition>,
+            <SPosition key={23} player={""} ></SPosition>,
+            <SPosition key={24} player={""} ></SPosition>,
+            <SPosition key={25} player={""} ></SPosition>,
+            <SPosition key={26} player={""} ></SPosition>,
+            <SPosition key={27} player={""} ></SPosition>,
+            <SPosition key={28} player={""} ></SPosition>,
+            <SPosition key={29} player={""} ></SPosition>,
+            <SPosition key={30} player={""} ></SPosition>,
+            <SPosition key={31} player={""} ></SPosition>,
+            <SPosition key={32} player={""} ></SPosition>,
+            <SPosition key={33} player={""} ></SPosition>,
         ],
         inputSnippet: <>
                 <div className="how-many-players">Number of Players</div>
@@ -75,6 +70,10 @@ constructor(){
                     </>
     }
     this.buildBoard()
+}
+
+componentDidUpdate(){
+    console.log(this.state)
 }
 
 buildBoard(){
@@ -114,33 +113,90 @@ buildBoard(){
         
         this.playercycle = new PlayerPool(number, this.gameBoard.head.left, selectedPlayers)
 
+        console.log(this.playercycle.head)
         this.setState({
             htmlplayers: selectedPlayers
         })
 
-        this.executeTurn(this.playercycle.head)
+        this.askDirection(this.playercycle.head)
      }
 
 
+     hardCopyArray(array){
+         let newArray = []
+         for(let i= 0; i < array.length; i ++){
+             newArray.push(array[i])
+         }
+         return newArray
+     }
+
+     changeDirection(player){
+            player.direction = "left"
+            this.executeTurn(player)
+     }
+
+     askDirection(player){
+        if(player.position.index !== 99){
+            if(player.direction === "right"){
+                this.setState({
+                    inputSnippet: <>
+                                    <div className="pick up disk?">Turn Around?</div>
+                                        <div onClick={() => this.changeDirection(player)} className="new-game">
+                                            <div className="new-game-text">yes</div>
+                                        </div>
+                                        <div onClick={() => this.executeTurn(player)} className="new-game">
+                                            <div className="new-game-text">no</div>
+                                        </div>
+                                    </>
+                }) 
+            } else {
+                this.executeTurn(player)
+            }
+        } else {
+            this.executeTurn(player)
+        }
+     }
+
+     makeMove(player){
+        if(player.direction === "right"){
+            if(player.position.right === null){
+                player.direction = "left"
+                return this.makeMove(player)
+            } else {
+                player.position = player.position.right
+                return player.position
+            }
+        } else {
+            if(player.position.left === null){
+                //This is the point where the player escapes and logic needs to be written to remove them from the playercycle.
+                player.escaped = true
+                return player.position
+            } else {
+                player.position = player.position.left
+                return player.position
+            }
+        }
+     }
 
 
      executeTurn(player){
         let moveAmount = rollDice()
         let current = player.position
-        for(let i=0; i < moveAmount; i ++){
-            current = current.right
-        }
-        console.log(current)
-        console.log(player.position)
-        console.log(player.image)
-        player.position = current
+        let oldPosition = player.position
 
-        
+        for(let i=0; i < moveAmount; i++){
+            current = this.makeMove(player)
+        }
+
+        console.log(current)
 
          this.setState(prev => {
-             let newpositions = prev.positions
-             newpositions[current.index] = <SPosition player={player.image}></SPosition>
-            
+             
+             let newpositions = this.hardCopyArray(prev.positions)
+             if(current.index !== 99){
+                newpositions[current.index] = <SPosition player={player.image}></SPosition>
+             }
+             
             return {
                 positions: newpositions,
                 inputSnippet: <>
@@ -154,17 +210,20 @@ buildBoard(){
                                 </>
             }
          })
+        //  this.forceUpdate()
      }
 
      handlePickup(player, selection){
         if(selection === "no"){
-            this.executeTurn(player.nextPlayer)
+            this.askDirection(player.nextPlayer)
         } else {
-
+            console.log(player.position.value)
+            this.askDirection(player.nextPlayer)
         }
      }
 
      
+
 
 
    
@@ -262,10 +321,11 @@ class Position {
 
 class PlayerPool {
     constructor(count, position, imageArray){
+        console.log(count)
         this.head = null
         this.tail = null
-        for(let i = 0; i < count; i ++){
-            this.assemble(new Player(position, imageArray[i]))
+        for(let i = 0; i < count; i++){
+            this.assemble(new Player(position, imageArray[i], i))
         }
     }
 
@@ -277,6 +337,7 @@ class PlayerPool {
         } else {
             this.tail.nextPlayer = node
             node.nextPlayer = this.head
+            this.tail = node
         }
     }
 
@@ -284,7 +345,8 @@ class PlayerPool {
 }
 
 class Player {
-    constructor(position, image){
+    constructor(position, image, index){
+        this.index = index
         this.nextPlayer = null
         this.tokens = 0
         this.score = 0

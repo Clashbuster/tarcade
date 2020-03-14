@@ -4,24 +4,18 @@ import React from 'react';
 
 
 export default class SPosition extends React.Component {
-    constructor(){
-        super()
-        this.state = {
-            image: this.props.player
-        }
-    }
 
-    componentDidUpdate(prevProps) {
-        if(prevProps.player !== this.props.player) {
-          this.setState({image: this.props.player});
-        }
-      }
+    constructor(props){
+        super(props)
+        console.log(this.props.player)
+    }
 
 
     render(){
         return(
             <div className="sposition">
-                {this.state.image}
+                {this.props.player}
+                {/* <img className="splayer" alt="oopsie" src={require("../player1.png")}></img> */}
             </div>
         )
     }
