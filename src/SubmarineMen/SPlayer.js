@@ -18,7 +18,18 @@ export default class SPlayer extends React.Component {
     render(){
         return(
             <div className="splayer">
-                I'm a player
+                <div>
+                    Player {this.props.playerNumber}
+                </div>
+                <div>
+                    Tokens : {this.props.tokens}
+                </div>
+                <div>
+                    Score : {this.props.score}
+                </div>
+                <div>
+                    Escaped : {this.props.escaped? "yes" : "no"}
+                </div>
             </div>
         )
     }

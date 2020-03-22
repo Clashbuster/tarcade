@@ -15,40 +15,42 @@ constructor(){
     this.playercycle = null
     this.gameBoard = null
     this.state = {
+        air: 25,
+        round: 1,
+        playerStats: [],
         positions: [
-            <SPosition key={1} player={""} ></SPosition>,
-            <SPosition key={2} player={""} ></SPosition>,
-            <SPosition key={3} player={""} ></SPosition>,
-            <SPosition key={4} player={""} ></SPosition>,
-            <SPosition key={5} player={""} ></SPosition>,
-            <SPosition key={6} player={""} ></SPosition>,
-            <SPosition key={7} player={""} ></SPosition>,
-            <SPosition key={8} player={""} ></SPosition>,
-            <SPosition key={9} player={""} ></SPosition>,
-            <SPosition key={10} player={""} ></SPosition>,
-            <SPosition key={11} player={""} ></SPosition>,
-            <SPosition key={12} player={""} ></SPosition>,
-            <SPosition key={13} player={""} ></SPosition>,
-            <SPosition key={14} player={""} ></SPosition>,
-            <SPosition key={15} player={""} ></SPosition>,
-            <SPosition key={16} player={""} ></SPosition>,
-            <SPosition key={17} player={""} ></SPosition>,
-            <SPosition key={18} player={""} ></SPosition>,
-            <SPosition key={19} player={""} ></SPosition>,
-            <SPosition key={20} player={""} ></SPosition>,
-            <SPosition key={21} player={""} ></SPosition>,
-            <SPosition key={22} player={""} ></SPosition>,
-            <SPosition key={23} player={""} ></SPosition>,
-            <SPosition key={24} player={""} ></SPosition>,
-            <SPosition key={25} player={""} ></SPosition>,
-            <SPosition key={26} player={""} ></SPosition>,
-            <SPosition key={27} player={""} ></SPosition>,
-            <SPosition key={28} player={""} ></SPosition>,
-            <SPosition key={29} player={""} ></SPosition>,
-            <SPosition key={30} player={""} ></SPosition>,
-            <SPosition key={31} player={""} ></SPosition>,
-            <SPosition key={32} player={""} ></SPosition>,
-            <SPosition key={33} player={""} ></SPosition>,
+            <SPosition key={1} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={2} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={3} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={4} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={5} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={6} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={7} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={8} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={9} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={10} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={11} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={12} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={13} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={14} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={15} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={16} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={17} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={18} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={19} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={20} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={21} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={22} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={23} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={24} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={25} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={26} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={27} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={28} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={29} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={30} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={31} player={""} emptyPosition={""} ></SPosition>,
+            <SPosition key={32} player={""} emptyPosition={""} ></SPosition>
         ],
         inputSnippet: <>
                 <div className="how-many-players">Number of Players</div>
@@ -98,12 +100,12 @@ buildBoard(){
 
      populatePlayers(number){
         let allPlayers = [
-            <img className="splayer" alt="oopsie" src={require("../player1.png")}></img>,
-            <img className="splayer" alt="oopsie" src={require("../player2.png")}></img>,
-            <img className="splayer" alt="oopsie" src={require("../player3.png")}></img>,
-            <img className="splayer" alt="oopsie" src={require("../player4.png")}></img>,
-            <img className="splayer" alt="oopsie" src={require("../player5.png")}></img>,
-            <img className="splayer" alt="oopsie" src={require("../player6.png")}></img>,
+            <img alt="oopsie" src={require("../player1.png")}></img>,
+            <img alt="oopsie" src={require("../player2.png")}></img>,
+            <img alt="oopsie" src={require("../player3.png")}></img>,
+            <img alt="oopsie" src={require("../player4.png")}></img>,
+            <img alt="oopsie" src={require("../player5.png")}></img>,
+            <img alt="oopsie" src={require("../player6.png")}></img>,
         ]
         let selectedPlayers = []
 
@@ -113,9 +115,8 @@ buildBoard(){
         
         this.playercycle = new PlayerPool(number, this.gameBoard.head.left, selectedPlayers)
 
-        console.log(this.playercycle.head)
         this.setState({
-            htmlplayers: selectedPlayers
+            playerStats: this.playercycle.renderArray()
         })
 
         this.askDirection(this.playercycle.head)
@@ -132,15 +133,16 @@ buildBoard(){
 
      changeDirection(player){
             player.direction = "left"
-            this.executeTurn(player)
+            return this.executeTurn(player)
      }
 
      askDirection(player){
+         
         if(player.position.index !== 99){
             if(player.direction === "right"){
                 this.setState({
                     inputSnippet: <>
-                                    <div className="pick up disk?">Turn Around?</div>
+                                    <div className="pick up disk?">{player.index + 1} : Turn Around?</div>
                                         <div onClick={() => this.changeDirection(player)} className="new-game">
                                             <div className="new-game-text">yes</div>
                                         </div>
@@ -150,10 +152,10 @@ buildBoard(){
                                     </>
                 }) 
             } else {
-                this.executeTurn(player)
+                return this.executeTurn(player)
             }
         } else {
-            this.executeTurn(player)
+            return this.executeTurn(player)
         }
      }
 
@@ -169,7 +171,7 @@ buildBoard(){
         } else {
             if(player.position.left === null){
                 //This is the point where the player escapes and logic needs to be written to remove them from the playercycle.
-                player.escaped = true
+                
                 return player.position
             } else {
                 player.position = player.position.left
@@ -178,55 +180,160 @@ buildBoard(){
         }
      }
 
+     executeWinnerStatement(){
+        this.playercycle.resetPlayers(this.gameBoard.head.left)
+        this.playercycle.updateAllStatsRenderWithScore()
+         let winner = this.playercycle.identifyWinner()
+         this.setState({
+             inputSnippet: winner.statRender,
+             playerStats: this.playercycle.renderArray()
+         })
+     }
+
+     executeRoundCleanup(player){
+         this.playercycle.resetPlayers(this.gameBoard.head.left)
+         this.gameBoard.removeEmptyPositions()
+         this.playercycle.updateAllStatsRenderWithScore()
+
+         if(this.state.round > 2){
+            return this.executeWinnerStatement()
+        }
+         this.setState(prev => {
+            let newpositions = this.gameBoard.generateRenderArray()
+            let newRound = prev.round += 1
+             return {
+                playerStats: this.playercycle.renderArray(),
+                 positions : newpositions,
+                    round: newRound
+                }
+         })
+         return this.askDirection(player.nextPlayer)
+     }
+
 
      executeTurn(player){
-        let moveAmount = rollDice()
-        let current = player.position
-        let oldPosition = player.position
 
-        for(let i=0; i < moveAmount; i++){
-            current = this.makeMove(player)
+        if(player.escaped === true){
+            console.log(`player ${player.index} has escaped`)
+            return this.askDirection(player.nextPlayer)
         }
 
-        console.log(current)
-
-         this.setState(prev => {
-             
-             let newpositions = this.hardCopyArray(prev.positions)
-             if(current.index !== 99){
-                newpositions[current.index] = <SPosition player={player.image}></SPosition>
-             }
-             
-            return {
-                positions: newpositions,
-                inputSnippet: <>
-                                <div className="pick up disk?">Pick up disk?</div>
-                                    <div onClick={() => this.handlePickup(player, "yes")} className="new-game">
-                                        <div className="new-game-text">yes</div>
-                                    </div>
-                                    <div onClick={() => this.handlePickup(player, "no")} className="new-game">
-                                        <div className="new-game-text">no</div>
-                                    </div>
-                                </>
+        this.setState(prev => {
+            let newAir = prev.air
+            newAir -= player.tokens
+            if(newAir < 0){
+                newAir = 0
             }
-         })
-        //  this.forceUpdate()
+
+            return {
+                air: newAir
+            }
+        })
+
+        let moveAmount = rollDice()
+        moveAmount -= player.tokens
+
+        console.log(`${player.index} moving ${moveAmount} spaces`)
+
+        let current = player.position
+
+            current.player = null
+     
+            this.playercycle.dissassembleAllOtherPlayers(player)
+          
+            if(moveAmount > 0){
+                for(let i=0; i < moveAmount; i++){
+                    current = this.makeMove(player)
+                }
+            }
+
+            current.player = player
+            
+            if(current.index === 99){
+                if(player.direction === "left"){
+                    player.escaped = true
+                    player.updateStatRender()
+                    this.setState({
+                        playerStats: this.playercycle.renderArray()
+                    })
+                }
+            }
+
+            this.playercycle.reassembleAllOtherPlayers()
+
+            if(this.playercycle.checkAllEscaped() === true){
+                this.setState({
+                    air: 25
+                }, ()=> {
+                   return this.executeRoundCleanup(player)
+                })
+            }
+
+
+            this.setState(prev => {
+ 
+                let newpositions = this.gameBoard.generateRenderArray()
+   
+                
+               return {
+                   positions: newpositions,
+                   inputSnippet: <>
+                                   <div className="pick up disk?"> Player {player.index + 1} : Pick up disk?</div>
+                                       <div onClick={() => this.handlePickup(player, "yes")} className="new-game">
+                                           <div className="new-game-text">yes</div>
+                                       </div>
+                                       <div onClick={() => this.handlePickup(player, "no")} className="new-game">
+                                           <div className="new-game-text">no</div>
+                                       </div>
+                                       <div onClick={() => this.handleDrop(player)} className="new-game">
+                                           <div className="new-game-text">no</div>
+                                       </div>
+                                   </>
+               }
+            })
+       
+
+        
+         if(this.state.air <= 0){
+             this.setState({
+                 air: 25
+             }, ()=> {
+                return this.executeRoundCleanup(player)
+             })
+         }
+     }
+
+     handleDrop(player){
+         if(player.position.index !== 99){
+
+         } else {
+            this.askDirection(player.nextPlayer)
+         }
      }
 
      handlePickup(player, selection){
-        if(selection === "no"){
-            this.askDirection(player.nextPlayer)
-        } else {
-            console.log(player.position.value)
-            this.askDirection(player.nextPlayer)
+            if(selection === "no"){
+                this.askDirection(player.nextPlayer)
+            } else if(player.position.index !== 99){
+                if(player.position.empty === false){
+                    player.tokens += 1
+                    player.score += player.position.value
+                    player.position.empty = true
+                    player.updateStatRender()
+                    this.setState({
+                        playerStats: this.playercycle.renderArray()
+                    })
+                    
+                    this.askDirection(player.nextPlayer)
+                } else {
+                    this.askDirection(player.nextPlayer) 
+                }
+            } else {
+                this.askDirection(player.nextPlayer)
+            } 
         }
-     }
-
      
 
-
-
-   
 
     render(){
         return(
@@ -241,7 +348,11 @@ buildBoard(){
              {this.state.positions}
             </div>
             <div className="s-player-input">
+                <div className="s-air-countdown"> Round : {this.state.round} Air : {this.state.air}</div>
             {this.state.inputSnippet}
+            </div>
+            <div className="s-player-statistics">
+                {this.state.playerStats}
             </div>
             </div>
         )
@@ -264,7 +375,6 @@ function shuffle(array) {
       array[currentIndex] = array[randomIndex];
       array[randomIndex] = temporaryValue;
     }
-  
     return array;
   }
 
@@ -297,6 +407,45 @@ class boardObj {
             node.left = current
     }
 
+    generateRenderArray(){
+        let output = []
+        let current = this.head
+        while(current !== null){
+            if(current.player !== null){
+                if(current.empty === true){
+                    output.push(<SPosition player={current.player.image} emptyPosition={true}></SPosition>)
+                } else {
+                    output.push(<SPosition player={current.player.image} emptyPosition={false}></SPosition>)
+                }
+            } else {
+                if(current.empty === true){
+                    output.push(<SPosition player={""} emptyPosition={true}></SPosition>)
+                } else {
+                    output.push(<SPosition player={""} emptyPosition={false}></SPosition>)
+                }
+            }
+            current = current.right
+        }
+        return output
+    }
+
+    removeEmptyPositions(){
+        let submarine = this.head.left
+      
+        let current = this.head
+        while(current !== null){
+            if(current.empty === true){
+                let prev = current.left
+                let next = current.right
+                prev.right = next
+                next.left = prev
+            }
+            current.player = null
+            current = current.right
+        }
+        this.head = submarine.right
+    }
+
     displayBoard = () => {
         let current = this.head
         while(current){
@@ -321,7 +470,7 @@ class Position {
 
 class PlayerPool {
     constructor(count, position, imageArray){
-        console.log(count)
+        this.assemblyStack = []
         this.head = null
         this.tail = null
         for(let i = 0; i < count; i++){
@@ -341,7 +490,122 @@ class PlayerPool {
         }
     }
 
+    identifyWinner(){
+        let current = this.head.nextPlayer
+        let output = this.head.nextPlayer
 
+            while(current !== this.head){
+                if(current.totalScore > output.totalScore){
+                    output = current
+                }
+                current = current.nextPlayer
+            }
+            if(current.totalScore > output.totalScore){
+                output = current
+            }
+        return output
+    }
+
+    dissassembleAllOtherPlayers(player){
+        console.log('hello from dissassembler')
+        this.assemblyStack = []
+        let current = player.nextPlayer
+        while(current !== player){
+            console.log('hello from dissassembler loop')
+            if(current.position.index !== 99){
+                if(current.position.right !== null){
+                    let prev = current.position.left
+                    let next = current.position.right
+                    prev.right = next
+                    next.left = prev
+                    this.assemblyStack.unshift(current.position)
+                    current = current.nextPlayer
+
+                } else {
+                    let prev = current.position.left
+                    prev.right = null
+                    this.assemblyStack.unshift(current.position)
+                    current = current.nextPlayer
+                }
+            } else {
+                current = current.nextPlayer
+            }
+        }
+    }
+
+    reassembleAllOtherPlayers(){
+        console.log('hello from reassembler')
+        for(let i = 0; i < this.assemblyStack.length; i ++){
+            let current = this.assemblyStack[i]
+            let prev = current.left
+            let next = current.right
+            prev.right = current
+            next.left = current
+        }
+    }
+
+
+    checkAllEscaped(){
+        let answer = true
+        let current = this.head.nextPlayer
+       
+        while(current !== this.head){
+            if(current.escaped === false){
+                answer = false
+            }
+            current = current.nextPlayer
+        }
+        if(this.head.escaped === false){
+            answer = false
+        }
+        return answer
+    }
+
+    updateAllStatsRenderWithScore(){
+        let current = this.head.nextPlayer
+        while(current !== this.head){
+            current.updateStatsWithScoreRender()
+            current = current.nextPlayer
+        }
+        this.head.updateStatsWithScoreRender()
+    }
+
+    resetPlayers(submarine){
+        let current = this.head.nextPlayer
+
+        while(current !== this.head){
+            if(current.escaped === true){
+                current.totalScore += current.score
+            }
+            current.score = 0
+            current.escaped = false
+            current.tokens = 0
+            current.position = submarine
+            current.direction = "right"
+            current = current.nextPlayer
+        }
+            if(current.escaped === true){
+                current.totalScore += current.score
+            }
+            current.score = 0
+            current = this.head
+            current.escaped = false
+            current.tokens = 0
+            current.position = submarine
+            current.direction = "right"
+    }
+
+    renderArray(){
+        let outputArray = []
+        let current = this.head.nextPlayer
+        while(current !== this.head){
+            outputArray.push(current.statRender)
+            current = current.nextPlayer
+        }
+        outputArray.unshift(this.head.statRender)
+        return outputArray
+    }
+  
 }
 
 class Player {
@@ -350,10 +614,21 @@ class Player {
         this.nextPlayer = null
         this.tokens = 0
         this.score = 0
+        this.totalScore = 0
         this.position = position
         this.escaped = false
         this.direction = "right"
         this.image = image
+        this.statRender = <SPlayer playerNumber={this.index + 1} tokens={this.tokens} escaped={this.escaped} ></SPlayer>
+    }
+
+    updateStatRender(){
+        this.statRender = <SPlayer playerNumber={this.index + 1} score={this.totalScore} tokens={this.tokens} escaped={this.escaped} ></SPlayer>
+    }
+
+    updateStatsWithScoreRender(){
+        this.statRender = <SPlayer playerNumber={this.index + 1} score={this.totalScore} tokens={this.tokens} escaped={this.escaped} ></SPlayer>
+
     }
 
 }

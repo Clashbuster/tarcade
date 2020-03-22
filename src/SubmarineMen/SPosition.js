@@ -5,18 +5,25 @@ import React from 'react';
 
 export default class SPosition extends React.Component {
 
-    constructor(props){
-        super(props)
-        console.log(this.props.player)
-    }
+    // constructor(props){
+    //     super(props)
+    // }
 
 
     render(){
-        return(
-            <div className="sposition">
-                {this.props.player}
-                {/* <img className="splayer" alt="oopsie" src={require("../player1.png")}></img> */}
-            </div>
-        )
+            if(this.props.emptyPosition === true){
+                console.log('hello from position')
+            return (
+                <div className="sposition-empty">
+                    {this.props.player}
+                </div>
+            )
+        } else {
+            return(
+                <div className="sposition">
+                    {this.props.player}
+                </div>
+            ) 
+        }
     }
 }
