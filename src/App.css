@@ -4,7 +4,12 @@
   margin: 0;
   padding:0;
   background-color: black;
+  display: flex;
+  flex-direction: column;
+
 }
+
+
 
 #first-screen {
   display: flex;
@@ -37,7 +42,7 @@
 }
 
 #browser {
-  min-height: 100vh;
+  min-height: 90vh;
   display: flex;
   /* justify-content: flex-start;
   align-items: stretch; */
@@ -45,7 +50,7 @@
 
 #game-list {
   padding: 20px;
-  height: 90vh;
+  height: 80vh;
   order: 1;
   flex: 1 1 0px;
   align-self: center;
@@ -57,7 +62,7 @@
 
 #game-window {
   padding: 8px;
-  height: 90vh;
+  height: 80vh;
   order: 2;
   flex: 1 4 0px;
   align-self: center;
@@ -72,7 +77,7 @@
   width: 600px;
   height: 550px;
   padding: 5px;
-  border-radius: 5px;
+  border-radius: 2px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -84,7 +89,7 @@
   height: 30px;
   width: 80px;
   margin-top: 10px;
-  border-radius: 5px;
+  border-radius: 2px;
   background-color: #ed6663;
   display:flex;
   flex-direction: column;
@@ -100,8 +105,13 @@
 #ad-margin {
   padding: 8px;
   order: 3;
+  align-self: center;
   flex: 1 1 0px;
-  align-self: stretch;
+  height: 80vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 #game-list-fixed {
@@ -112,7 +122,16 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
 
+#ad-fixed {
+  width: 130px;
+  height: 400px;
+  border-radius: 2px;
+  background-color: #1b262c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .game-list-card{
@@ -121,11 +140,41 @@
   padding: 5px;
   margin-top: 2px;
   margin-bottom: 2px;
-  border-radius: 5px;
+  border-radius: 2px;
   background-color: #ed6663;
 }
 .game-list-card:hover {
   background-color: #ffa372;
+}
+
+#top-bar{
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+}
+
+.spacer1 {
+  height: 50px;
+  width: 100px;
+  background-color: #1b262c;
+  order: 1;
+  flex: 2 1 auto;
+}
+
+.logo{
+  height: 100%;
+  width: 250px;
+  order: 2;
+
+}
+
+
+.spacer2 {
+  height: 50px;
+  width: 100px;
+  background-color: #1b262c;
+  order: 3;
+  flex: 5 1 auto;
 }
 
 

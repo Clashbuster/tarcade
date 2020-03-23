@@ -286,7 +286,7 @@ buildBoard(){
                                            <div className="new-game-text">no</div>
                                        </div>
                                        <div onClick={() => this.handleDrop(player)} className="new-game">
-                                           <div className="new-game-text">no</div>
+                                           <div className="new-game-text">drop</div>
                                        </div>
                                    </>
                }
@@ -305,9 +305,19 @@ buildBoard(){
 
      handleDrop(player){
          if(player.position.index !== 99){
-
+            if(player.position.empty === true){
+                let current = player.position
+                current.value = player.score
+                player.tokens = 0
+                player.score = 0
+                current.empty = false
+                this.setState({
+                    positions: this.gameBoard.generateRenderArray()
+                })
+                return this.askDirection(player.nextPlayer)
+            }
          } else {
-            this.askDirection(player.nextPlayer)
+            return this.askDirection(player.nextPlayer)
          }
      }
 
@@ -321,7 +331,8 @@ buildBoard(){
                     player.position.empty = true
                     player.updateStatRender()
                     this.setState({
-                        playerStats: this.playercycle.renderArray()
+                        playerStats: this.playercycle.renderArray(),
+                        positions: this.gameBoard.generateRenderArray()
                     })
                     
                     this.askDirection(player.nextPlayer)

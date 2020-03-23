@@ -4,7 +4,7 @@ import './TicTacToe.css';
 import './SubmarineMen.css';
 import FirstScreen from './components/FirstScreen'
 import Browser from './components/Browser'
-
+import TopBar from './components/TopBar'
 
 
 
@@ -32,6 +32,7 @@ componentDidUpdate(){
   render(){
     return (
       <div className="App">
+        {this.state.browser? <TopBar></TopBar> : null}
         {this.state.browser? <Browser></Browser> : <FirstScreen enterBrowser={this.enterBrowser}></FirstScreen>}
       </div>
     );

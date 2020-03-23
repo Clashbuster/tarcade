@@ -64,7 +64,9 @@ class Browser extends React.Component {
                 </div>
 
                 <div id="ad-margin">
+                    <div id="ad-fixed">
 
+                    </div>
                 </div>
 
           </div>
