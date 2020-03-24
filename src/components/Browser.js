@@ -1,6 +1,7 @@
 import React from 'react';
 import TicTacToe from '../TicTacToe/TicTacToe.js';
 import SubmarineMen from '../SubmarineMen/SubmarineMen.js';
+import Connect4 from '../Connect4/Connect4.js';
 
 
 
@@ -11,7 +12,8 @@ class Browser extends React.Component {
       selection: null,
       gameList: [
             ["tic-tac-toe", <TicTacToe></TicTacToe>],
-          ["submarine-men", <SubmarineMen></SubmarineMen>]
+          ["submarine-men", <SubmarineMen></SubmarineMen>],
+          ["connect-4", <Connect4></Connect4>]
       ]
     }
   }

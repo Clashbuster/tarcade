@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import './TicTacToe.css';
 import './SubmarineMen.css';
+import './Connect4.css';
 import FirstScreen from './components/FirstScreen'
 import Browser from './components/Browser'
 import TopBar from './components/TopBar'

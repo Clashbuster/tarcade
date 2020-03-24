@@ -1,0 +1,6 @@
+.connect4 {
+    height: 530px;
+    width: 580px;
+    display: flex;
+    flex-direction: column;
+}

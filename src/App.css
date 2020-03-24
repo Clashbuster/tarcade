@@ -10,11 +10,11 @@
 }
 
 
-
 #first-screen {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content:  center;
 }
 
 #title {
@@ -30,10 +30,13 @@
 .playbutton {
   background: url("../src/playbutton1.png");
   background-size: contain;
-  width: 200px;
-  height: 120px;
-  margin-left: auto;
-  margin-right: auto;
+  background-repeat: no-repeat;
+  width: 136px;
+  height: 55px;
+  margin-top:50px;
+  margin-bottom: 30px;
+  /* margin-left: auto;
+  margin-right: auto; */
 }
 
 .playbutton:hover {
@@ -118,7 +121,7 @@
   width: 130px;
   height: 400px;
   padding: 5px;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
