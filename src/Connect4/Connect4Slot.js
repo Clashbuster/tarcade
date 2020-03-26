@@ -4,13 +4,23 @@ import React from 'react';
 
 
 
-export default class Connect4Slot1 extends React.Component {
+export default class Connect4Slot extends React.Component {
    
+    renderDiv(){
+        switch(this.props.indentifier){
+            case 1:
+                return <div className="connect4-player1"></div>
+            case 2:
+                return <div className="connect4-player2"></div>
+            default:
+                return <div onClick={() => this.props.dropper(this.props.coordinate)} className="connect4-slot"></div> 
+        }
+    }
+
+
 
 
     render(){
-        return(
-            <div className="connect4-slot1">im a slot</div> 
-        )
+        return this.renderDiv()
     }
 }

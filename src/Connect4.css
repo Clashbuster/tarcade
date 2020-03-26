@@ -1,6 +1,64 @@
 .connect4 {
     height: 530px;
-    width: 580px;
+    width: 590px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.connect4-column{
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    
+}
+
+.connect4-slot{
+    margin: 2px;
+    border-radius: 30px;
+    background-color: #000000;
+    flex: 1 1 auto;
+}
+
+.connect4-slot:hover{
+    background-color: #1b262c;
+}
+
+.connect4-player1{
+    margin: 2px;
+    border-radius: 30px;
+    background-color: #ed6663;
+    flex: 1 1 auto;
+}
+
+.connect4-player2{
+    margin: 2px;
+    border-radius: 30px;
+    background-color: #0f4c81;
+    flex: 1 1 auto;
+}
+
+.start-game{
+    align-self: center;
+    justify-self: center;
+    padding:8px;
+    border-radius: 2px;
+    background-color: #ed6663;
     display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.start-game:hover{
+    background-color: #ffa372;
+}
+
+.connect4-winner-statement{
+    padding:8px;
+    border-radius: 2px;
+    background-color: #ed6663;
+    align-self: center;
+    justify-self: center;
 }

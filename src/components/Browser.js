@@ -11,9 +11,9 @@ class Browser extends React.Component {
     this.state = {
       selection: null,
       gameList: [
-            ["tic-tac-toe", <TicTacToe></TicTacToe>],
-          ["submarine-men", <SubmarineMen></SubmarineMen>],
-          ["connect-4", <Connect4></Connect4>]
+            ["tic-tac-toe-sign", <TicTacToe></TicTacToe>],
+          ["submarine-men-sign", <SubmarineMen></SubmarineMen>],
+          ["connect-4-sign", <Connect4></Connect4>]
       ]
     }
   }
@@ -40,7 +40,7 @@ class Browser extends React.Component {
 
   makeGameListCards(){
       return this.state.gameList.map((item, index) => {
-        return <div className="game-list-card" onClick={() => this.updateSelection(item[1])} key={index}>{item[0]}</div>
+        return <div className={item[0]} onClick={() => this.updateSelection(item[1])} key={index}></div>
       })
   }
 
