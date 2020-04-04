@@ -1,0 +1,36 @@
+.go{
+    height: 530px;
+    width: 530px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.go-cell{
+    height: 22px;
+    width: 22px;
+    margin: 3px;
+    background-image: url("../src/emptygocell.png")
+}
+
+.go-cell:hover{
+    background-image: url("../src/emptygocellhover.png")
+}
+
+.go-player1{
+    height: 22px;
+    width: 22px;
+    margin: 3px;
+    background-image: url("../src/goplayer1.png")
+}
+
+.go-player2{
+    height: 22px;
+    width: 22px;
+    margin: 3px;
+    background-image: url("../src/goplayer2.png")
+}
+
+
+

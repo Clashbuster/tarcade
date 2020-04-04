@@ -62,11 +62,11 @@ export default class Connect4 extends React.Component {
 
            for(let y = 0; y < this.boardModel[x].length; y ++){
                if(this.boardModel[x][y] === 1){
-                        newColumn.push(<Connect4Slot indentifier={1} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
+                        newColumn.push(<Connect4Slot identifier={1} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
                }else if(this.boardModel[x][y] === 2){
-                        newColumn.push(<Connect4Slot indentifier={2} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
+                        newColumn.push(<Connect4Slot identifier={2} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
                } else {
-                        newColumn.push(<Connect4Slot indentifier={0} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
+                        newColumn.push(<Connect4Slot identifier={0} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
                }
            }
         //    console.log(newColumn)

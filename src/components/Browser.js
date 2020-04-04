@@ -2,6 +2,7 @@ import React from 'react';
 import TicTacToe from '../TicTacToe/TicTacToe.js';
 import SubmarineMen from '../SubmarineMen/SubmarineMen.js';
 import Connect4 from '../Connect4/Connect4.js';
+import Go from '../Go/Go.js';
 
 
 
@@ -13,7 +14,8 @@ class Browser extends React.Component {
       gameList: [
             ["tic-tac-toe-sign", <TicTacToe></TicTacToe>],
           ["submarine-men-sign", <SubmarineMen></SubmarineMen>],
-          ["connect-4-sign", <Connect4></Connect4>]
+          ["connect-4-sign", <Connect4></Connect4>],
+          ["go-sign", <Go></Go>]
       ]
     }
   }

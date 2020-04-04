@@ -213,6 +213,19 @@
   background-image: url("../src/connect4signflash.png")
 }
 
+.go-sign {
+  height: 30px;
+  width: 120px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  background-color: #ed6663;
+}
+
+.go-sign:hover {
+  background-color: #ffa372;
+}
+
+
 
 
 
