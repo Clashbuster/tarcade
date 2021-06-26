@@ -1,284 +1,274 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Connect4Column from  '../Connect4/Connect4Column.js'
 import Connect4Slot from  '../Connect4/Connect4Slot.js'
 
+const clone = (board) => {
+  const newBoard = [];
+  for (let x = 0; x < board.length; x++) {
+    const newY = [...board[x]];
+    newBoard.push(newY);
+  }
+  return newBoard;
+};
 
-
-
-export default class Connect4 extends React.Component {
-   constructor(){
-       super()
-       this.boardModel = []
-       this.state = {
-           turn: true,
-           board: [],
-           gamestarted: false
-       }
-   }  
-
-   componentDidUpdate(){
-       console.log(this.state.board)
-   }
-
-   generateModel(){
-    let newboardmodel = []
-    for(let x = 0; x < 7; x ++){
-        let newColumn = []
-        for(let y = 0; y < 6; y++){
-            newColumn.push(0)
-        }
-        newboardmodel.push(newColumn)
+const applyNewCoordinatesToBoardModel = (boardModel, turn, coordinates) => {
+  const landingcoordinates = []
+  const newBoardModel = clone(boardModel);
+  for(let y = 0; y < newBoardModel[coordinates[0]].length; y++){
+    if(!newBoardModel[coordinates[0]][y]){
+        newBoardModel[coordinates[0]][y] = turn? 1: 2;
+        landingcoordinates.push(coordinates[0]);
+        landingcoordinates.push(y);
+        break;
     }
-    this.boardModel = newboardmodel
-    // console.log(this.boardModel)
-   }
-   
-   
-   generateBoard(){
-       this.generateModel()
-    let gameboard = []
+  }
+  return {boardModel: newBoardModel, coordinates: landingcoordinates};
+};
 
-       for(let i = 0; i < 7; i++){
-        let newColumn = []
-        for(let k = 0; k < 6; k++){
-            newColumn.push(<Connect4Slot indentifier={0} dropper={this.dropper} coordinate={[i,k]}></Connect4Slot>)
-        }
-        // console.log(newColumn)
-        gameboard.push(<Connect4Column column={newColumn} ></Connect4Column>)
-       }
-
-       this.setState({
-        board: gameboard,
-        gamestarted: true
-    })
-   }
-
-   updateRenderFromModel(){
-       let newBoardRender = []
-
-       for(let x = 0; x < this.boardModel.length; x ++){
-
-        let newColumn = []
-
-           for(let y = 0; y < this.boardModel[x].length; y ++){
-               if(this.boardModel[x][y] === 1){
-                        newColumn.push(<Connect4Slot identifier={1} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
-               }else if(this.boardModel[x][y] === 2){
-                        newColumn.push(<Connect4Slot identifier={2} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
-               } else {
-                        newColumn.push(<Connect4Slot identifier={0} dropper={this.dropper} coordinate={[x,y]}></Connect4Slot>)
-               }
-           }
-        //    console.log(newColumn)
-           newBoardRender.push(<Connect4Column column={newColumn} ></Connect4Column>)
-       }
-       return newBoardRender
-   }
-
-   dropper = (coordinates) => {
-       let landingcoordinates = []
-            for(let y = 0; y < this.boardModel[coordinates[0]].length; y ++){
-                if(this.boardModel[coordinates[0]][y] === 0){
-                    this.boardModel[coordinates[0]][y] = this.state.turn? 1: 2
-                    landingcoordinates.push(coordinates[0])
-                    landingcoordinates.push(y)
-                    break;
-                }
-            }
-            // console.log(this.boardModel[8,8])
-            if(this.checkpositiveDiagonal(landingcoordinates, this.state.turn? 1: 2) === true){
-                return this.executeWinnder(this.state.turn? 1: 2)
-            } else if( this.checkhorizontal(landingcoordinates, this.state.turn? 1: 2) === true){
-                return this.executeWinnder(this.state.turn? 1: 2)
-            } else if(this.checkvertical(landingcoordinates, this.state.turn? 1: 2) === true){
-                return this.executeWinnder(this.state.turn? 1: 2)
-            } else if(this.checknegativeDiagonal(landingcoordinates, this.state.turn? 1: 2) === true){
-                return this.executeWinnder(this.state.turn? 1: 2)
-            } else {
-                this.setState(prev => {
-
-                    return {
-                        board: this.updateRenderFromModel(),
-                        turn: !prev.turn 
-                    }
-                    
-                })
-            }
-   }
-
-   checkpositiveDiagonal(coordinates, identifier){
-    let counter = 0
-
-    while(true){
-        if(coordinates[0] + counter +1 ===7){
-            break;
-        } else if(coordinates[1] + counter +1 ===6) {
-            break;
-        }
-        counter += 1
+const applyNewCoordinatesToBoard = (boardModel, turn, cb) => {
+  const board = [];
+  for(let x = 0; x < boardModel.length; x++){
+    const newColumn = [];
+    for(let y = 0; y < boardModel[x].length; y++){
+      let id = 0;
+      if(boardModel[x][y] === 1 || boardModel[x][y] === 2){
+        id = boardModel[x][y];
+      }
+      newColumn.push(<Connect4Slot key={y} identifier={id} turn={turn} boardModel={boardModel} onClick={cb} coordinate={[x,y]} />);
     }
+    board.push(<Connect4Column key={x} column={newColumn} />);
+  }
+  return board;
+};
 
-    let backwardsCounter = 0
-    let wintracker = 0
+const checkForWinningBoard = (boardModel, landingcoordinates, turn) => (
+  checkpositiveDiagonal(boardModel, landingcoordinates, turn? 1: 2) ||
+    checkhorizontal(boardModel, landingcoordinates, turn? 1: 2) ||
+    checkvertical(boardModel, landingcoordinates, turn? 1: 2) ||
+    checknegativeDiagonal(boardModel, landingcoordinates, turn? 1: 2)
+);
 
-    while(true){
-        if(this.boardModel[coordinates[0] + counter - backwardsCounter][coordinates[1] + counter - backwardsCounter] === identifier){
-            wintracker += 1
-            // console.log(wintracker)
-            if(wintracker === 4){
-                return true
-            }
-        } else {
-            wintracker = 0
-        }
-
-        if(coordinates[0] + counter - (backwardsCounter +1) === -1){
-            break;
-        } else if(coordinates[1] + counter - (backwardsCounter +1) === -1){
-            break;
-        }
-       
-        backwardsCounter += 1
-    }
-    
-    return false
+const generateBoard = (boardModel, turn, onClickBoard) => {
+   boardModel.splice(0, boardModel.length);
+   for(let x = 0; x < 7; x++){
+     let newColumn = [];
+     for(let y = 0; y < 6; y++){
+       newColumn.push(0);
+     }
+     boardModel.push(newColumn);
    }
 
-   checknegativeDiagonal(coordinates, identifier){
-    let counter = 0
-
-    while(true){
-        if(coordinates[0] + counter +1 ===7){
-            break;
-        } else if(coordinates[1] - counter - 1 === - 1) {
-            break;
-        }
-        counter += 1
-    }
-
-    let backwardsCounter = 0
-    let wintracker = 0
-
-    while(true){
-        if(this.boardModel[coordinates[0] + counter - backwardsCounter][coordinates[1] - counter + backwardsCounter] === identifier){
-            wintracker += 1
-            // console.log(wintracker)
-            if(wintracker === 4){
-                return true
-            }
-        } else {
-            wintracker = 0
-        }
-
-        if(coordinates[0] + counter - (backwardsCounter +1) === -1){
-            break;
-        } else if(coordinates[1] - counter + (backwardsCounter + 1) === 6){
-            break;
-        }
-       
-        backwardsCounter += 1
-    }
-    
-    return false
+   const board = [];
+   for(let i = 0; i < 7; i++){
+     let newColumn = []
+     for(let k = 0; k < 6; k++){
+        newColumn.push(<Connect4Slot key={k} identifier={0} onClick={onClickBoard} turn={turn} boardModel={boardModel} coordinate={[i,k]} />);
+     }
+     board.push(<Connect4Column key={i} column={newColumn} />);
    }
 
-   checkhorizontal(coordinates, identifier){
-    let counter = 0
+   return {boardModel, board};
+};
 
-    while(true){
-        if(coordinates[0] + counter + 1 === 7){
-            break;
-        } 
-        counter += 1
-    }
+const checkpositiveDiagonal = (boardModel, coordinates, identifier) => {
+  let counter = 0
 
-    let backwardsCounter = 0
-    let wintracker = 0
+  while(true){
+      if(coordinates[0] + counter +1 ===7){
+          break;
+      } else if(coordinates[1] + counter +1 ===6) {
+          break;
+      }
+      counter += 1
+  }
 
-    while(true){
-        if(this.boardModel[coordinates[0]   + counter - backwardsCounter][coordinates[1]] === identifier){
-            wintracker += 1
-            // console.log(wintracker)
-            if(wintracker === 4){
-                return true
-            }
-        } else {
-            wintracker = 0
-        }
+  let backwardsCounter = 0
+  let wintracker = 0
 
-        if(coordinates[0] + counter - (backwardsCounter +1) === -1){
-            break;
-        }
-       
-        backwardsCounter += 1
-    }
-    
-    return false
-   }
+  while(true){
+      if(boardModel[coordinates[0] + counter - backwardsCounter][coordinates[1] + counter - backwardsCounter] === identifier){
+          wintracker += 1
+          if(wintracker === 4){
+              return true
+          }
+      } else {
+          wintracker = 0
+      }
 
-   checkvertical(coordinates, identifier){
-    let counter = 0
-
-    while(true){
-        if(coordinates[1] + counter + 1 === 6){
-            break;
-        } 
-        counter += 1
-    }
-
-    let backwardsCounter = 0
-    let wintracker = 0
-
-    while(true){
-        if(this.boardModel[coordinates[0]][coordinates[1]  + counter - backwardsCounter] === identifier){
-            wintracker += 1
-            // console.log(wintracker)
-            if(wintracker === 4){
-                return true
-            }
-        } else {
-            wintracker = 0
-        }
-
-        if(coordinates[1] + counter - (backwardsCounter +1) === -1){
-            break;
-        }
-       
-        backwardsCounter += 1
-    }
-    
-    return false
-   }
-
-
-   executeWinnder(identifier){
-       let player = ""
-       if(identifier === 1){
-           player = "Red"
-       } else if(identifier === 2){
-           player = "Blue"
-       }
-
-        this.setState({
-        board: <div className="connect4-winner-statement">{`${player} Won the game!`}</div>
-        })
-   }
-
-
-
-
-
+      if(coordinates[0] + counter - (backwardsCounter +1) === -1){
+          break;
+      } else if(coordinates[1] + counter - (backwardsCounter +1) === -1){
+          break;
+      }
+     
+      backwardsCounter += 1
+  }
   
+  return false
+};
+
+const checknegativeDiagonal = (boardModel, coordinates, identifier) => {
+  let counter = 0
+
+  while(true){
+      if(coordinates[0] + counter +1 ===7){
+          break;
+      } else if(coordinates[1] - counter - 1 === - 1) {
+          break;
+      }
+      counter += 1
+  }
+
+  let backwardsCounter = 0
+  let wintracker = 0
+
+  while(true){
+      if(boardModel[coordinates[0] + counter - backwardsCounter][coordinates[1] - counter + backwardsCounter] === identifier){
+          wintracker += 1
+          if(wintracker === 4){
+              return true
+          }
+      } else {
+          wintracker = 0
+      }
+
+      if(coordinates[0] + counter - (backwardsCounter +1) === -1){
+          break;
+      } else if(coordinates[1] - counter + (backwardsCounter + 1) === 6){
+          break;
+      }
+     
+      backwardsCounter += 1
+  }
+  
+  return false
+};
+
+const checkhorizontal = (boardModel, coordinates, identifier) => {
+  let counter = 0
+
+  while(true){
+      if(coordinates[0] + counter + 1 === 7){
+          break;
+      } 
+      counter += 1
+  }
+
+  let backwardsCounter = 0
+  let wintracker = 0
+
+  while(true){
+      if(boardModel[coordinates[0]   + counter - backwardsCounter][coordinates[1]] === identifier){
+          wintracker += 1
+          if(wintracker === 4){
+              return true
+          }
+      } else {
+          wintracker = 0
+      }
+
+      if(coordinates[0] + counter - (backwardsCounter +1) === -1){
+          break;
+      }
+     
+      backwardsCounter += 1
+  }
+  
+  return false
+};
+
+const checkvertical = (boardModel, coordinates, identifier) => {
+  let counter = 0
+
+  while(true){
+      if(coordinates[1] + counter + 1 === 6){
+          break;
+      } 
+      counter += 1
+  }
+
+  let backwardsCounter = 0
+  let wintracker = 0
+
+  while(true){
+      if(boardModel[coordinates[0]][coordinates[1]  + counter - backwardsCounter] === identifier){
+          wintracker += 1
+          if(wintracker === 4){
+              return true
+          }
+      } else {
+          wintracker = 0
+      }
+
+      if(coordinates[1] + counter - (backwardsCounter +1) === -1){
+          break;
+      }
+     
+      backwardsCounter += 1
+  }
+  
+  return false
+};
 
 
-    render(){
-        return(
-            <div className="connect4">
-                {this.state.gamestarted? this.state.board : <div onClick={()=> this.generateBoard()} className="start-game"> start</div> }
-            </div> 
-        )
+const updateRenderFromModel = (boardModel, cb) => {
+  let newBoardRender = [];
+  for(let x = 0; x < boardModel.length; x++){
+    let newColumn = [];
+    for(let y = 0; y < boardModel[x].length; y++){
+      let id = 0;
+      if(boardModel[x][y] === 1 || boardModel[x][y] === 2){
+        id = boardModel[x][y];
+      }
+      newColumn.push(<Connect4Slot identifier={id} onClick={cb} coordinate={[x,y]} />);
     }
-}
+    newBoardRender.push(<Connect4Column column={newColumn} />);
+  }
+  return newBoardRender;
+};
 
+const Connect4 = () => {
+  const [board, setBoard] = useState(null);
+  const [boardModel, setBoardModel] = useState([]);
+  const [turn, setTurn] = useState(false);
+  const [gamestarted, setGamestarted] = useState(false);
 
+  const onClickBoard = (coordinate, newTurn, newBoardModel) => {
+    // figure out new board
+    const updatedNewTurn = !newTurn;
+    const { boardModel: newBoardModel2, coordinates: newCoordinates } = applyNewCoordinatesToBoardModel(newBoardModel, updatedNewTurn, coordinate);
 
+    // check for win, if win update and end
+    const winning = checkForWinningBoard(newBoardModel2, newCoordinates, updatedNewTurn);
+    
+    // if win update
+    if (winning) {
+      setBoard(<div className="connect4-winner-statement">{`${updatedNewTurn ? 'Red' : 'Blue'} won the game!`}</div>);
+      return;
+    }
+
+    // if not win, calculate new board and update
+    updateBoard(newBoardModel2, updatedNewTurn);
+  };
+
+  const updateBoard = (newBoardModel, newTurn) => {
+    const newBoard = applyNewCoordinatesToBoard(newBoardModel, newTurn, onClickBoard);
+    setBoardModel(newBoardModel);
+    setBoard(newBoard);
+    setTurn(newTurn);
+  };
+  
+  const startGame = () => {
+    const { boardModel: newBoardModel, board: newBoard } = generateBoard(boardModel, turn, onClickBoard);
+    setBoardModel(newBoardModel);
+    setBoard(newBoard);
+    setGamestarted(true);
+  };
+  return (
+    <div className="connect4">
+      { gamestarted? board : <div onClick={startGame} className="start-game">start</div> }
+    </div> 
+  )
+};
+
+export default Connect4;

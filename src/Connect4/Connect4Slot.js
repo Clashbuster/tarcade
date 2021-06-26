@@ -1,26 +1,11 @@
 import React from 'react';
 
+const Connect4Slot = ({ identifier, onClick, coordinate, turn, boardModel }) => {
+  if (identifier === 1 || identifier === 2) {
+    const className = `connect4-player${identifier}`;
+    return <div className={className}></div>;
+  }
+  return <div onClick={() => onClick(coordinate, turn, boardModel)} className="connect4-slot"></div>;
+};
 
-
-
-
-export default class Connect4Slot extends React.Component {
-   
-    renderDiv(){
-        switch(this.props.identifier){
-            case 1:
-                return <div className="connect4-player1"></div>
-            case 2:
-                return <div className="connect4-player2"></div>
-            default:
-                return <div onClick={() => this.props.dropper(this.props.coordinate)} className="connect4-slot"></div> 
-        }
-    }
-
-
-
-
-    render(){
-        return this.renderDiv()
-    }
-}
+export default Connect4Slot;
